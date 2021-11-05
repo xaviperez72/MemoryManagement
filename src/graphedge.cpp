@@ -4,6 +4,14 @@
 GraphEdge::GraphEdge(int id)
 {
     _id = id;
+    counter++;
+    Print("GraphEdge Constructor " << counter);
+}
+
+GraphEdge::~GraphEdge()
+{
+    Print("GraphEdge Destructor " << counter);
+    counter--;
 }
 
 void GraphEdge::SetChildNode(GraphNode *childNode)

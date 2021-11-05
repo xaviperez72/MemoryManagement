@@ -28,6 +28,7 @@ bool ChatBotApp::OnInit()
 // wxWidgets FRAME
 ChatBotFrame::ChatBotFrame(const wxString &title) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(width, height))
 {
+    Print("ChatBotFrame Constructor");
     // create panel with background image
     ChatBotFrameImagePanel *ctrlPanel = new ChatBotFrameImagePanel(this);
 
@@ -107,6 +108,7 @@ END_EVENT_TABLE()
 ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     : wxScrolledWindow(parent, id)
 {
+    Print("ChatBotPanelDialog Constructor");
     // sizer will take care of determining the needed scroll size
     _dialogSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(_dialogSizer);
@@ -117,8 +119,10 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     //// STUDENT CODE
     ////
 
+    // Task 1 : Exclusive Ownership 1   
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
+    // _chatLogic = new ChatLogic(); 
+    _chatLogic = std::make_unique<ChatLogic>();
 
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
@@ -132,10 +136,13 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
 
 ChatBotPanelDialog::~ChatBotPanelDialog()
 {
+    Print("ChatBotPanelDialog Destructor");
     //// STUDENT CODE
     ////
 
-    delete _chatLogic;
+    // Task 1 : Exclusive Ownership 1   -  Small pointers doesn't need to delete.     
+    // if (_chatLogic != nullptr)
+    //    delete _chatLogic;
 
     ////
     //// EOF STUDENT CODE

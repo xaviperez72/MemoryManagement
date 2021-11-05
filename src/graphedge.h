@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "common.h"
 
 class GraphNode; // forward declaration
 
@@ -21,7 +22,8 @@ private:
 public:
     // constructor / desctructor
     GraphEdge(int id);
-
+    ~GraphEdge();
+    
     // getter / setter
     int GetID() { return _id; }
     void SetChildNode(GraphNode *childNode);
@@ -31,6 +33,9 @@ public:
 
     // proprietary functions
     void AddToken(std::string token);
+    
+    // DEBUGGING
+    static int counter;
 };
 
 #endif /* GRAPHEDGE_H_ */

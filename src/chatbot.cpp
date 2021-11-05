@@ -12,19 +12,24 @@
 ChatBot::ChatBot()
 {
     // invalidate data handles
-    _image = nullptr;
+    _image = NULL;
     _chatLogic = nullptr;
     _rootNode = nullptr;
+    _currentNode = nullptr;
+ 
+    Print("ChatBot Constructor nullptr"); 
+ 
 }
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
-    std::cout << "ChatBot Constructor" << std::endl;
+    Print("ChatBot Constructor image file");
     
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
+    _currentNode = nullptr;
 
     // load image into heap memory
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
@@ -32,7 +37,7 @@ ChatBot::ChatBot(std::string filename)
 
 ChatBot::~ChatBot()
 {
-    std::cout << "ChatBot Destructor" << std::endl;
+    Print("ChatBot Destructor");
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
@@ -40,10 +45,75 @@ ChatBot::~ChatBot()
         delete _image;
         _image = NULL;
     }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 }
 
-//// STUDENT CODE
+//// STUDENT CODE       - TASK 2  - RULE OF FIVE
 ////
+
+ChatBot::ChatBot(const ChatBot &r)              // Copy Constructor
+{                       
+    Print("ChatBot Copy Constructor");
+    _image = new wxBitmap(*(r._image));         // New if r._image has different image
+    _chatLogic = r._chatLogic;
+    _rootNode = r._rootNode;
+    _currentNode = r._currentNode;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+}
+
+ChatBot& ChatBot::operator=(const ChatBot &r)    // Assignment operator
+{   
+    Print("ChatBot Assignment operator =");
+    if (&r != this) {
+        if(_image != NULL) {
+            delete _image;
+            _image = NULL;
+        }
+        _image = new wxBitmap(*(r._image));  
+        _chatLogic = r._chatLogic;           // It is always the same
+        _rootNode = r._rootNode;             // It is always the same
+        _currentNode = r._currentNode;       // It is always the same
+    }
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot &&r)                   // Move Constructor
+{
+    Print("ChatBot Move Constructor");
+    _image = r._image;
+    _chatLogic = r._chatLogic;
+    if(_chatLogic != nullptr)
+        _chatLogic->SetChatbotHandle(this);
+    _rootNode = r._rootNode;
+    _currentNode = r._currentNode;     
+
+    r._image = nullptr;
+    r._chatLogic = nullptr;
+    r._rootNode = nullptr;
+    r._currentNode = nullptr;
+}
+
+ChatBot& ChatBot::operator=(ChatBot &&r)         // Move Assignment operator
+{
+    Print("ChatBot Move Assignment operator =");
+    if (&r != this) { 
+         if(_image != NULL) {
+            delete _image;
+            _image = NULL;
+         }
+        _image = new wxBitmap(*(r._image));     // New if r._image has different image
+        _chatLogic = r._chatLogic;
+        if(_chatLogic != nullptr)
+            _chatLogic->SetChatbotHandle(this);
+        _rootNode = r._rootNode;
+        _currentNode = r._currentNode;     
+
+        r._image = NULL;
+        r._chatLogic = nullptr;
+        r._rootNode = nullptr;
+        r._currentNode = nullptr;
+    }
+    return *this;
+}   
 
 ////
 //// EOF STUDENT CODE
