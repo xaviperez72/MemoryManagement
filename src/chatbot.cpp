@@ -11,33 +11,31 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
+    Print_Anyway("ChatBot Constructor"); 
+
     // invalidate data handles
     _image = NULL;
     _chatLogic = nullptr;
     _rootNode = nullptr;
     _currentNode = nullptr;
- 
-    Print("ChatBot Constructor nullptr"); 
- 
 }
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
-    Print("ChatBot Constructor image file");
+    Print_Anyway("ChatBot Constructor image file");
     
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
     _currentNode = nullptr;
-
     // load image into heap memory
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
 }
 
 ChatBot::~ChatBot()
 {
-    Print("ChatBot Destructor");
+    Print_Anyway("ChatBot Destructor");
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
@@ -53,7 +51,7 @@ ChatBot::~ChatBot()
 
 ChatBot::ChatBot(const ChatBot &r)              // Copy Constructor
 {                       
-    Print("ChatBot Copy Constructor");
+    Print_Anyway("ChatBot Copy Constructor");
     _image = new wxBitmap(*(r._image));         // New if r._image has different image
     _chatLogic = r._chatLogic;
     _rootNode = r._rootNode;
@@ -62,7 +60,7 @@ ChatBot::ChatBot(const ChatBot &r)              // Copy Constructor
 
 ChatBot& ChatBot::operator=(const ChatBot &r)    // Assignment operator
 {   
-    Print("ChatBot Assignment operator =");
+    Print_Anyway("ChatBot Assignment Operator =");
     if (&r != this) {
         if(_image != NULL) {
             delete _image;
@@ -78,7 +76,7 @@ ChatBot& ChatBot::operator=(const ChatBot &r)    // Assignment operator
 
 ChatBot::ChatBot(ChatBot &&r)                   // Move Constructor
 {
-    Print("ChatBot Move Constructor");
+    Print_Anyway("ChatBot Move Constructor");
     _image = r._image;
     _chatLogic = r._chatLogic;
     if(_chatLogic != nullptr)
@@ -94,13 +92,9 @@ ChatBot::ChatBot(ChatBot &&r)                   // Move Constructor
 
 ChatBot& ChatBot::operator=(ChatBot &&r)         // Move Assignment operator
 {
-    Print("ChatBot Move Assignment operator =");
+    Print_Anyway("ChatBot Move Assignment Operator =");
     if (&r != this) { 
-         if(_image != NULL) {
-            delete _image;
-            _image = NULL;
-         }
-        _image = new wxBitmap(*(r._image));     // New if r._image has different image
+        _image = r._image;
         _chatLogic = r._chatLogic;
         if(_chatLogic != nullptr)
             _chatLogic->SetChatbotHandle(this);

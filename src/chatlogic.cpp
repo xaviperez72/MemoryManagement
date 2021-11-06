@@ -18,48 +18,13 @@ int GraphEdge::counter = 0;
 ChatLogic::ChatLogic()
 {
     Print("ChatLogic Constructor");
-    //// STUDENT CODE
-    ////
 
-    // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
-
-    // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
-
-    ////
-    //// EOF STUDENT CODE
 }
 
 ChatLogic::~ChatLogic()
 {
     Print("ChatLogic Destructor");
 
-    //// STUDENT CODE
-    ////
-
-    // delete chatbot instance              TASK 5 
-    // if(_chatBot != nullptr)
-    //    delete _chatBot;
-
-    // TASK 3 - DELETE NOT NEEDED (THEY ARE SMART POINTERS)
-    // delete all nodes
-    // for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
-    // {
-    //   if(**it != nullptr)
-    //        delete **it;
-    //}
-
-    // delete all edges
-    // TASK 4 - THEY ARE OWNED BY EACH GraphNode, we don't need to delete them (they are unique)
-    //for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
-    //{
-    //    if(*it != nullptr)
-    //        delete *it;
-    //}
-
-    ////
-    //// EOF STUDENT CODE
 }
 
 template <typename T>
@@ -231,15 +196,10 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     // TASK 5 
     ChatBot chatbot_var("../images/chatbot.png");
-
     // add chatbot to graph root node
-    //_chatBot->SetRootNode(rootNode);
     chatbot_var.SetRootNode(rootNode);
     chatbot_var.SetChatLogicHandle(this);
-    //rootNode->MoveChatbotHere(_chatBot);
-    rootNode->MoveChatbotHere(chatbot_var);
-    ////
-    //// EOF STUDENT CODE
+    rootNode->MoveChatbotHere(std::move(chatbot_var));
 }
 
 void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
